@@ -1,0 +1,6 @@
+---
+# defaults file for jdk-tomcat
+#
+company_name: "oracle"
+java_version: "11"
+tomcat_version: "9.0.69"

@@ -1,0 +1,7 @@
+---
+# vars file for jdk-tomcat
+
+java_package_name: "java-11-openjdk"
+java_package_debian_name: "openjdk-11-jdk"
+tomcat_install_file: "apache-tomcat-{{ tomcat_version }}.tar.gz"
+tomcat_dest: "tomcat9"

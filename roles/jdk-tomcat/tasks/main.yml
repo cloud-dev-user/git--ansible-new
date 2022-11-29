@@ -1,0 +1,44 @@
+---
+# tasks file for jdk-tomcat
+
+- name: Install Jdk on target server with Redhat OS  
+  become: true
+  ansible.builtin.package:
+    name: "{{ java_package_name }}"
+    state: latest
+  when: ansible_facts['os_family'] == "RedHat"
+
+
+- name: Install Jdk on target server with debian  OS  
+  become: true
+  ansible.builtin.package:
+    name: "{{ java_package_debian_name }}"
+    state: latest
+  when: ansible_facts['os_family'] == "Debian"
+
+
+- name: Copy tomcat installation file to target server 
+  ansible.builtin.copy:
+    src: "{{ tomcat_install_file }}"
+    dest: "/tmp/{{ tomcat_install_file }}"
+    owner: kulkarav
+    group: kulkarav
+    mode: '0644'
+
+- name:  demo local action 
+  local_action: ansible.builtin.command echo " hello world" 
+
+- name: Create tomcat directory 
+  ansible.builtin.file:
+    path: "/tmp/{{ tomcat_dest }}"
+    state: directory
+    owner: kulkarav
+    group: kulkarav
+    mode: '0777'
+
+- name: Extract tomcat installation file on target server 
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ tomcat_install_file }}"
+    dest: "/tmp/{{ tomcat_dest }}"
+    remote_src: yes
+
