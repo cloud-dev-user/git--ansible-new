@@ -1,0 +1,9 @@
+---
+
+#- import_tasks: pre-quisite.yamlA
+#
+ - name: Check prequisite for kubernetes cluster 
+   include_tasks: pre-quisite.yaml
+
+ - name: Install Kubernetes cluster 
+   include_tasks: install.yaml

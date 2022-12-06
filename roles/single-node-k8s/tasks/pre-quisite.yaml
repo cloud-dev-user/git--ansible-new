@@ -1,0 +1,40 @@
+---
+# tasks file for single-node-k8s
+
+- name: Check RAM of the system
+  shell: " free -m | awk '{ print $4 }' | tail -2 | head -1 "
+  register: results 
+  
+- name: Check if memory is more than 2 Gb 
+  debug: 
+       var: results 
+  when: results.stdout|int > 2048
+
+- name: Make sure to open firewall for k8s ports
+  ansible.posix.firewalld:
+    port: "{{ item }}/tcp"
+    permanent: true
+    state: enabled
+  loop:
+      - 6443
+      - 2379-2380
+      - 10250
+      - 10259
+      - 10257
+      - 30000-32767
+
+- name: Disable swap in system
+  shell: "swapoff -a"
+
+- name: Check if docker is installed else install it 
+  ansible.builtin.shell: |
+         docker --version 
+         if [ "$?" == "0" ]; then 
+           echo " docker is installed "
+         else 
+           echo " docker is not installed" 
+           apt install docker 
+         fi
+  args:
+    executable: /bin/bash
+

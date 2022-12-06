@@ -1,0 +1,7 @@
+---
+
+- hosts: dev
+  become: true 
+  roles: 
+         - role: single-node-k8s
+           when: (ansible_os_family == 'Debian') or  (ansible_os_family == 'RedHat')
